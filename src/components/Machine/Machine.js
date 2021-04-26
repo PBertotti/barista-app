@@ -7,15 +7,109 @@
 
 // -----------------------------
 // Import dependencies;
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+
+// Import components;
 import {StyleSheet, View, Image, Text} from 'react-native';
-import baristaIcon from '../../assets/ico/barista-icon.png';
-import coffeeIcon from '../../assets/ico/coffee-icon.png';
-import waterIcon from '../../assets/ico/water-icon.png';
-import cupImage from '../../assets/img/cup.png';
+
+// Import assets;
+import {
+  baristaIcon,
+  coffeeIcon,
+  waterIcon,
+  clockIcon,
+  filterIcon,
+  checkIcon,
+  alertIcon,
+} from '../../assets/ico';
+import {cupImage, coffeeBrewing} from '../../assets/img';
+
+// Import lang;
 import language from '../../lang/lang.json';
-import filterIcon from '../../assets/ico/filter-icon.png';
-import coffeeBrewing from '../../assets/img/coffee_brewing.png';
+
+// -----------------------------
+
+// -----------------------------
+const ProgressFeedback = ({
+  lang,
+  waterLevel,
+  coffeeLevel,
+  isReady,
+  hasFilter,
+  isPreparing,
+  hasCup,
+  nextDate,
+}) => {
+  //Define states;
+  const [displayedText, setDisplayedText] = useState();
+  const [feedbackSate, setFeedbackState] = useState('regular');
+
+  // Update feedback on progress changing;
+  // -----------------------------
+  useEffect(() => {
+    let newDisplayedText;
+    let newFeedbackSate;
+
+    if (isReady) {
+      newDisplayedText = lang.ready;
+      newFeedbackSate = 'ready';
+    } else if (!hasFilter) {
+      newDisplayedText = lang.noFilter;
+      newFeedbackSate = 'alert';
+    } else if (!hasCup) {
+      newDisplayedText = lang.noCup;
+      newFeedbackSate = 'alert';
+    } else if (waterLevel === 0) {
+      newDisplayedText = lang.noWater;
+      newFeedbackSate = 'alert';
+    } else if (coffeeLevel === 0) {
+      newDisplayedText = lang.noCoffee;
+      newFeedbackSate = 'alert';
+    } else if (isPreparing) {
+      newDisplayedText = lang.preparing;
+      newFeedbackSate = 'alert';
+    } else {
+      newDisplayedText = 'nextDate';
+    }
+
+    setDisplayedText(newDisplayedText);
+    setFeedbackState(newFeedbackSate);
+  }, [
+    isReady,
+    hasFilter,
+    hasCup,
+    waterLevel,
+    coffeeLevel,
+    isPreparing,
+    nextDate,
+    lang,
+  ]);
+
+  // Define new style proprieties;
+  // -----------------------------
+  const displayedIcon =
+    feedbackSate === 'ready'
+      ? checkIcon
+      : feedbackSate === 'alert'
+      ? alertIcon
+      : clockIcon;
+
+  const displayedTextStyle =
+    feedbackSate === 'ready'
+      ? {...styles.progressText, color: '#12991F'}
+      : feedbackSate === 'alert'
+      ? {...styles.progressText, color: '#C62300'}
+      : {...styles.progressText};
+
+  // Render component;
+  // -----------------------------
+  return (
+    <View style={styles.progressView}>
+      <Image source={displayedIcon} />
+      <Text style={displayedTextStyle}>{displayedText}</Text>
+    </View>
+  );
+};
 // -----------------------------
 
 // -----------------------------
@@ -89,33 +183,35 @@ const Machine = ({hasCup, isReady, hasFilter, isPreparing}) => {
   const lang = language.eng;
 
   return (
-    <View style={styles.base}>
-      <View style={styles.internal}>
-        <View style={styles.frontShadow}>
-          <View style={styles.front}>
-            <BrewBottom disabled={!hasFilter || isReady} />
-            <Indicator type="coffee" volume={2} />
-            <Indicator type="water" volume={2} />
-            {!hasFilter && (
-              <Image source={filterIcon} style={styles.filterIcon} />
-            )}
-          </View>
-          <View style={styles.dispenserBase}>
-            <View style={styles.dispenserPipe}>
-              <View style={styles.dispenserHole}>
-                {isPreparing && (
-                  <Image source={coffeeBrewing} style={styles.preparing} />
-                )}
+    <View>
+      <ProgressFeedback lang={lang} />
+      <View style={styles.base}>
+        <View style={styles.internal}>
+          <View style={styles.frontShadow}>
+            <View style={styles.front}>
+              <BrewBottom disabled={!hasFilter || isReady} />
+              <Indicator type="coffee" volume={2} />
+              <Indicator type="water" volume={2} />
+              {!hasFilter && (
+                <Image source={filterIcon} style={styles.filterIcon} />
+              )}
+            </View>
+            <View style={styles.dispenserBase}>
+              <View style={styles.dispenserPipe}>
+                <View style={styles.dispenserHole}>
+                  {isPreparing && (
+                    <Image source={coffeeBrewing} style={styles.preparing} />
+                  )}
+                </View>
               </View>
             </View>
           </View>
+          {!hasCup && (
+            <View>
+              <Image source={cupImage} style={styles.cupImage} />
+            </View>
+          )}
         </View>
-        {!hasCup && (
-          <View>
-            {isReady && <Text style={styles.readyText}>{lang.ready}</Text>}
-            <Image source={cupImage} style={styles.cupImage} />
-          </View>
-        )}
       </View>
     </View>
   );
@@ -263,6 +359,20 @@ const styles = StyleSheet.create({
   indicatorIcon: {
     marginTop: 3,
     marginLeft: 8,
+  },
+  // Date styles;
+  progressView: {
+    marginTop: '15%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  progressText: {
+    marginLeft: 10,
+    marginTop: 5,
+    fontSize: 20,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    color: '#B8B8B8',
   },
 });
 

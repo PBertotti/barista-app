@@ -1,6 +1,11 @@
 {
     "eng":{
-        "ready": "Ready!"
+        "ready": "Ready!",
+        "noFilter":"Check the filter",
+        "noCup": "Missing cup",
+        "noWater":"Fill the water tank",
+        "noCoffee":"Fill the powder tank",
+        "preparing":"Preparing..."
     },
     "pt_br":{
         "ready": "Pronto!"
