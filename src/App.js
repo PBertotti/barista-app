@@ -1,9 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Provider} from 'react-redux';
 import {Dashboard} from './screens';
+import store from './redux/store';
 
 const App = () => {
-  return <Dashboard />;
+  return (
+    <Provider store={store}>
+      <Dashboard />
+    </Provider>
+  );
 };
 
 export default App;

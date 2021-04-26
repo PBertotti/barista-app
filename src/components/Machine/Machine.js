@@ -67,7 +67,6 @@ const ProgressFeedback = ({
       newFeedbackSate = 'alert';
     } else if (isPreparing) {
       newDisplayedText = lang.preparing;
-      newFeedbackSate = 'alert';
     } else {
       newDisplayedText = 'nextDate';
     }
@@ -179,19 +178,43 @@ const Indicator = ({type, volume}) => {
 // -----------------------------
 
 // -----------------------------
-const Machine = ({hasCup, isReady, hasFilter, isPreparing}) => {
+const Machine = ({
+  hasCup,
+  isReady,
+  hasFilter,
+  isPreparing,
+  coffeeLevel,
+  waterLevel,
+}) => {
   const lang = language.eng;
 
   return (
     <View>
-      <ProgressFeedback lang={lang} />
+      <ProgressFeedback
+        lang={lang}
+        hasFilter={hasFilter}
+        hasCup={hasCup}
+        isReady={isReady}
+        isPreparing={isPreparing}
+        waterLevel={waterLevel}
+        coffeeLevel={coffeeLevel}
+      />
       <View style={styles.base}>
         <View style={styles.internal}>
           <View style={styles.frontShadow}>
             <View style={styles.front}>
-              <BrewBottom disabled={!hasFilter || isReady} />
-              <Indicator type="coffee" volume={2} />
-              <Indicator type="water" volume={2} />
+              <BrewBottom
+                disabled={
+                  !hasFilter ||
+                  isReady ||
+                  !hasCup ||
+                  !waterLevel ||
+                  !coffeeLevel
+                }
+                clicked={isPreparing}
+              />
+              <Indicator type="coffee" volume={coffeeLevel} />
+              <Indicator type="water" volume={waterLevel} />
               {!hasFilter && (
                 <Image source={filterIcon} style={styles.filterIcon} />
               )}
@@ -206,7 +229,7 @@ const Machine = ({hasCup, isReady, hasFilter, isPreparing}) => {
               </View>
             </View>
           </View>
-          {!hasCup && (
+          {hasCup && (
             <View>
               <Image source={cupImage} style={styles.cupImage} />
             </View>

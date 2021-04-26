@@ -8,16 +8,28 @@
 // -----------------------------
 // Import dependencies;
 import React from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Machine} from '../../components';
-
+import {useSelector} from 'react-redux';
 // -----------------------------
 
 // -----------------------------
 const Dashboard = () => {
+  const dashboardState = useSelector(state => state.dashboard);
+
   return (
     <View style={styles.main}>
-      <Machine />
+      {dashboardState.devices.map(device => (
+        <Machine
+          key={device.serialID}
+          hasCup={device.status.hasCup}
+          hasFilter={device.status.hasFilter}
+          isPreparing={device.status.isPreparing}
+          isReady={device.status.isReady}
+          waterLevel={device.status.waterLevel}
+          coffeeLevel={device.status.coffeeLevel}
+        />
+      ))}
     </View>
   );
 };
