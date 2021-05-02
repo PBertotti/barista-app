@@ -1,2 +1,3 @@
 import Dashboard from './Dashboard';
-export {Dashboard};
+import Addition from './Addition';
+export {Dashboard, Addition};
