@@ -7,7 +7,7 @@
 
 // ----------------------------
 // Import Dashboard action types;
-
+import {SEARCH_REQUEST, SEARCH_RESULT} from '../../actions/dashboard';
 // ----------------------------
 
 // ----------------------------
@@ -32,6 +32,8 @@ const initialState = {
 //Define dashboard reducer;
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SEARCH_REQUEST':
+      return {...state};
     default:
       return {...state};
   }

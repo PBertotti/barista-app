@@ -2,19 +2,22 @@
 // File: Dashboard.js
 // Author: Paulo Bruno B. Corá
 // Date: 24/04/2021
-// Brief: Barista app device addition screen
+// Brief: Barista app dashboard screen
 // -----------------------------
 
 // -----------------------------
 // Import dependencies;
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-
+import {StyleSheet, View, Text} from 'react-native';
 // -----------------------------
 
 // -----------------------------
 const Addition = () => {
-  return <View style={styles.main}></View>;
+  return (
+    <View style={styles.main}>
+      <Text>Nothing here yet!</Text>
+    </View>
+  );
 };
 // -----------------------------
 

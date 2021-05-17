@@ -6,12 +6,6 @@ const createMQTTInstance = () =>
     clientId: 'your_client_id',
   })
     .then(client => {
-      client.on('connect', () => alert('client'));
-
-      client.on('error', err => alert('err'));
-
-      client.on('closed', event => alert('event'));
-
       client.connect();
     })
     .catch(err => alert('error' + err));

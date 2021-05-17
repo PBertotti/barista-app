@@ -7,18 +7,56 @@
 
 // -----------------------------
 // Import dependencies;
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Machine} from '../../components';
-import {useSelector} from 'react-redux';
+import {Machine, DialogModal} from '../../components';
+import {useDispatch, useSelector} from 'react-redux';
+import Fab from 'react-native-fab';
+import {handleDeviceSearchRequest} from '../../redux/actions/dashboard';
+
+// Import lang;
+import language from '../../lang/lang.json';
 // -----------------------------
 
 // -----------------------------
 const Dashboard = () => {
+  // -----------------------------
+  // Define hooks and states;
   const dashboardState = useSelector(state => state.dashboard);
+  const [modalState, setModalState] = useState(null);
+  const dispatch = useDispatch();
+  const lang = language.eng;
 
+  // -----------------------------
+  // Handle closure of any open model;
+  const handleModalClose = () => {
+    setModalState(null);
+  };
+
+  // Handle device searching request;
+  const handleSearchRequest = () => {
+    setModalState({
+      image: 'searching',
+      title: lang.searchingDevices,
+      description: lang.searchingDevicesDescription,
+      buttonText: lang.cancel,
+    });
+
+    dispatch(handleDeviceSearchRequest());
+  };
+
+  // -----------------------------
+  // Screen rendering
   return (
     <View style={styles.main}>
+      {modalState && (
+        <DialogModal
+          handleModalClose={handleModalClose}
+          title={modalState.title}
+          description={modalState.description}
+          buttonText={modalState.buttonText}
+        />
+      )}
       {dashboardState.devices.map(device => (
         <Machine
           key={device.serialID}
@@ -30,6 +68,7 @@ const Dashboard = () => {
           coffeeLevel={device.status.coffeeLevel}
         />
       ))}
+      <Fab buttonColor="#81200B" onClickAction={handleSearchRequest} />
     </View>
   );
 };

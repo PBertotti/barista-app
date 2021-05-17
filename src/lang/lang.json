@@ -1,6 +1,7 @@
 {
     "eng":{
         "ready": "Ready!",
+        "cancel":"cancel",
         "noFilter":"Check the filter",
         "noCup": "Missing cup",
         "noWater":"Fill the water tank",
@@ -8,7 +9,9 @@
         "preparing":"Preparing...",
         "dashboard":"Baristas",
         "routines":"Routines",
-        "settings":"Settings"
+        "settings":"Settings",
+        "searchingDevices":"Searching for Baristas...",
+        "searchingDevicesDescription":"Make sure there are Baristas nearby!"
     },
     "pt_br":{
         "ready": "Pronto!"

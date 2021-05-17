@@ -1,8 +1,8 @@
 // -----------------------------
-// File: Dashboard.js
+// File: Machine.js
 // Author: Paulo Bruno B. Corá
 // Date: 24/04/2021
-// Brief: Barista app dashboard screen
+// Brief: Barista app barista machine component
 // -----------------------------
 
 // -----------------------------
